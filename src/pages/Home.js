@@ -15,22 +15,39 @@ export class Home extends Component {
     this.state = {
       data: getInitialData(),
       backupData: getInitialData(),
+      title: "",
+      charLeft: 50,
+      body: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleArchived = this.handleArchived.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.setTittle = this.setTittle.bind(this);
+    this.setBody = this.setBody.bind(this);
   }
+
+  setTittle = (e) => {
+    if (this.state.charLeft !== 0) {
+      const title = e;
+      const characterLeft = 50 - e.length;
+      this.setState({
+        title: title,
+        charLeft: characterLeft,
+      });
+    }
+  };
+
+  setBody = (e) => {
+    this.setState({
+      body: e,
+    });
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const title =
-      e.target.firstElementChild.firstElementChild.firstElementChild
-        .firstElementChild.nextElementSibling.firstElementChild.value;
-    const body =
-      e.target.firstElementChild.firstElementChild.nextElementSibling
-        .firstElementChild.firstElementChild.nextElementSibling
-        .firstElementChild.value;
+    const title = this.state.title;
+    const body = this.state.body;
     const createdAt = new Date().toISOString();
     const id = Date.now();
     const archived = false;
@@ -38,7 +55,10 @@ export class Home extends Component {
     this.setState({
       data: [...this.state.data, newNotes],
       backupData: this.state.data,
+      title: "",
+      body: "",
     });
+    console.log(body);
   };
 
   handleDelete = (id) => {
@@ -76,7 +96,14 @@ export class Home extends Component {
     return (
       <Container>
         <Header onSearch={this.handleSearch} />
-        <InputForm submit={this.handleSubmit} />
+        <InputForm
+          submit={this.handleSubmit}
+          setTitle={this.setTittle}
+          title={this.state.title}
+          charLeft={this.state.charLeft}
+          setBody={this.setBody}
+          body={this.state.body}
+        />
         <SavedNotes
           data={this.state.data}
           onDelete={this.handleDelete}

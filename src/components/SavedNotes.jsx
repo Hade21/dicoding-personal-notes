@@ -11,14 +11,13 @@ const SavedNotes = ({ data, onDelete, onArchive }) => {
     <Grid container spacing={1}>
       {list.map((item) => {
         return (
-          <Grid item lg={4} sm={4} md={4} xs={4}>
+          <Grid item lg={4} sm={4} md={4} xs={4} key={item.id}>
             <ListItem>
               <CardNotes
                 title={item.title}
                 date={new Date(item.createdAt).toString()}
                 body={item.body}
                 id={item.id}
-                key={item.id}
                 archived={item.archived}
                 onDelete={() => onDelete(item.id)}
                 onArchived={() => onArchive(item.id)}
